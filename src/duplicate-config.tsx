@@ -57,6 +57,9 @@ export default function Command() {
   const [configs, setConfigs] = useState<GCloudConfig[]>([]);
   const [nameError, setNameError] = useState<string | undefined>();
   const [selectedConfig, setSelectedConfig] = useState<string>("");
+  const [project, setProject] = useState<string>("");
+  const [account, setAccount] = useState<string>("");
+  const [region, setRegion] = useState<string>("");
 
   useEffect(() => {
     try {
@@ -72,7 +75,22 @@ export default function Command() {
     }
   }, []);
 
-  async function handleSubmit(values: { sourceConfig: string; newName: string }) {
+  useEffect(() => {
+    if (selectedConfig) {
+      const properties = getConfigProperties(selectedConfig);
+      setProject(properties.project || "");
+      setAccount(properties.account || "");
+      setRegion(properties.region || "");
+    }
+  }, [selectedConfig]);
+
+  async function handleSubmit(values: {
+    sourceConfig: string;
+    newName: string;
+    project: string;
+    account: string;
+    region: string;
+  }) {
     if (!values.newName) {
       setNameError("New configuration name is required");
       return;
@@ -88,23 +106,20 @@ export default function Command() {
     }
 
     try {
-      // Get properties from source configuration
-      const properties = getConfigProperties(values.sourceConfig);
-
       // Create new configuration
       runGCloudCommand(`gcloud config configurations create ${values.newName}`);
 
-      // Copy properties to new configuration
-      if (properties.project) {
-        runGCloudCommand(`gcloud config set project ${properties.project} --configuration=${values.newName}`);
+      // Set properties from form values
+      if (values.project) {
+        runGCloudCommand(`gcloud config set project ${values.project} --configuration=${values.newName}`);
       }
 
-      if (properties.account) {
-        runGCloudCommand(`gcloud config set account ${properties.account} --configuration=${values.newName}`);
+      if (values.account) {
+        runGCloudCommand(`gcloud config set account ${values.account} --configuration=${values.newName}`);
       }
 
-      if (properties.region) {
-        runGCloudCommand(`gcloud config set compute/region ${properties.region} --configuration=${values.newName}`);
+      if (values.region) {
+        runGCloudCommand(`gcloud config set compute/region ${values.region} --configuration=${values.newName}`);
       }
 
       await showToast({
@@ -160,6 +175,27 @@ export default function Command() {
             dropNameErrorIfNeeded();
           }
         }}
+      />
+      <Form.TextField
+        id="project"
+        title="Project ID"
+        placeholder="my-gcp-project"
+        value={project}
+        onChange={setProject}
+      />
+      <Form.TextField
+        id="account"
+        title="Account Email"
+        placeholder="user@example.com"
+        value={account}
+        onChange={setAccount}
+      />
+      <Form.TextField
+        id="region"
+        title="Region"
+        placeholder="us-central1"
+        value={region}
+        onChange={setRegion}
       />
     </Form>
   );
