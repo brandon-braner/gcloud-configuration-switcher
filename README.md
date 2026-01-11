@@ -18,11 +18,16 @@ A Raycast extension to easily manage Google Cloud SDK configurations. Create, du
 
 ## Installation
 
-### Development Mode
+### Option 1: Install from Raycast Store (Recommended)
 
-1. Clone or navigate to this directory:
+*Coming soon - this extension is not yet published to the Raycast Store*
+
+### Option 2: Install Locally (Development Mode)
+
+1. Clone this repository:
    ```bash
-   cd ~/code/raycast-gcloud-config
+   git clone <repository-url>
+   cd raycast-gcloud-config
    ```
 
 2. Install dependencies:
@@ -30,15 +35,33 @@ A Raycast extension to easily manage Google Cloud SDK configurations. Create, du
    npm install
    ```
 
-3. Open Raycast and run "Import Extension"
+3. Build the extension:
+   ```bash
+   npm run build
+   ```
 
-4. Select the `raycast-gcloud-config` directory
+4. Open Raycast on your Mac:
+   - Press `⌘ Space` to open Raycast
+   - Type "Import Extension" and press Enter
+   - Navigate to and select the `raycast-gcloud-config` directory
+   - Click "Import"
 
-### Build for Distribution
+5. The extension is now installed! You can access its commands by:
+   - Opening Raycast (`⌘ Space`)
+   - Typing any of the command names (see [Commands](#commands) section)
 
-```bash
-npm run build
-```
+### Option 3: Development Mode (For Contributors)
+
+If you want to develop or modify the extension:
+
+1. Follow steps 1-2 from Option 2
+
+2. Run in development mode:
+   ```bash
+   npm run dev
+   ```
+
+3. This opens the extension in Raycast's development mode where changes are reflected in real-time
 
 ## Usage
 
@@ -67,9 +90,14 @@ npm run build
 
 1. Open Raycast
 2. Type "Duplicate GCloud Configuration"
-3. Select the source configuration
-4. Enter a new name
-5. Press ⌘ Enter to duplicate
+3. Select the source configuration from the dropdown
+4. The form will auto-populate with values from the source configuration
+5. Edit any fields you want to change:
+   - New Configuration Name (required)
+   - Project ID (optional, can modify)
+   - Account Email (optional, can modify)
+   - Region (optional, can modify)
+6. Press ⌘ Enter to create the new configuration
 
 ## Commands
 
@@ -79,6 +107,8 @@ npm run build
 
 ## Development
 
+### Running in Development Mode
+
 To run the extension in development mode:
 
 ```bash
@@ -86,6 +116,31 @@ npm run dev
 ```
 
 This will open the extension in Raycast's development mode where you can test changes in real-time.
+
+### Running Tests
+
+This extension includes unit tests for core functionality:
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage
+npm run test:coverage
+```
+
+### Building for Distribution
+
+To build the extension for distribution:
+
+```bash
+npm run build
+```
+
+The built extension will be available in the `dist` directory.
 
 ## License
 
