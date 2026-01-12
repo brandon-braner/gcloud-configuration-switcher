@@ -142,6 +142,21 @@ npm run build
 
 The built extension will be available in the `dist` directory.
 
+### Publishing to Raycast Store
+
+To publish the extension to the Raycast Store:
+
+```bash
+npm run publish
+```
+
+This will guide you through the publishing process. You'll need to:
+1. Have a Raycast account
+2. Be logged in via the Raycast CLI
+3. Follow the prompts to submit your extension
+
+For more information, see the [Raycast Extension Publishing Guide](https://developers.raycast.com/basics/publish-an-extension).
+
 ## License
 
 MIT
