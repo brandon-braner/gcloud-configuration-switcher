@@ -28,7 +28,7 @@ export function getGCloudPath(): string {
       gcloudPath = result;
       return result;
     }
-  } catch (error) {
+  } catch (_error) {
     // Ignore error and fall through
   }
 
@@ -64,7 +64,7 @@ export function runGCloudCommand(command: string): string {
     "/sbin",
     process.env.PATH || "",
   ];
-  
+
   // Need to run through shell with proper PATH and shell utilities
   return execSync(command, {
     encoding: "utf-8",

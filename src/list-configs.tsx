@@ -1,4 +1,13 @@
-import { ActionPanel, Action, List, showToast, Toast, Icon, confirmAlert, Alert } from "@raycast/api";
+import {
+  ActionPanel,
+  Action,
+  List,
+  showToast,
+  Toast,
+  Icon,
+  confirmAlert,
+  Alert,
+} from "@raycast/api";
 import { useState, useEffect } from "react";
 import { runGCloudCommand } from "./utils";
 
@@ -87,7 +96,9 @@ export default function Command() {
 
     if (confirmed) {
       try {
-        runGCloudCommand(`gcloud config configurations delete ${configName} --quiet`);
+        runGCloudCommand(
+          `gcloud config configurations delete ${configName} --quiet`,
+        );
         await showToast({
           style: Toast.Style.Success,
           title: "Configuration deleted",
@@ -114,12 +125,16 @@ export default function Command() {
           accessories={[
             { text: config.account },
             { text: config.region },
-            ...(config.isActive ? [{ icon: Icon.CheckCircle, tooltip: "Active" }] : []),
+            ...(config.isActive
+              ? [{ icon: Icon.CheckCircle, tooltip: "Active" }]
+              : []),
           ]}
           actions={
             <ActionPanel>
               <Action
-                title={config.isActive ? "Already Active" : "Activate Configuration"}
+                title={
+                  config.isActive ? "Already Active" : "Activate Configuration"
+                }
                 icon={Icon.CheckCircle}
                 onAction={() => activateConfig(config.name)}
               />
@@ -130,7 +145,11 @@ export default function Command() {
                 onAction={() => deleteConfig(config.name)}
                 shortcut={{ modifiers: ["cmd"], key: "delete" }}
               />
-              <Action title="Refresh" icon={Icon.ArrowClockwise} onAction={loadConfigs} />
+              <Action
+                title="Refresh"
+                icon={Icon.ArrowClockwise}
+                onAction={loadConfigs}
+              />
             </ActionPanel>
           }
         />

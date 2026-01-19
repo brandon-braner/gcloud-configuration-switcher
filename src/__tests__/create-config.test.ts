@@ -4,7 +4,9 @@ import { showToast, popToRoot, Toast } from "@raycast/api";
 // Mock dependencies
 jest.mock("../utils");
 
-const mockRunGCloudCommand = runGCloudCommand as jest.MockedFunction<typeof runGCloudCommand>;
+const mockRunGCloudCommand = runGCloudCommand as jest.MockedFunction<
+  typeof runGCloudCommand
+>;
 
 // Function to test handleSubmit logic from create-config.tsx
 async function handleSubmit(
@@ -14,7 +16,7 @@ async function handleSubmit(
     account: string;
     region: string;
   },
-  setNameError: (error: string | undefined) => void
+  setNameError: (error: string | undefined) => void,
 ) {
   if (!values.name) {
     setNameError("Configuration name is required");
@@ -27,17 +29,23 @@ async function handleSubmit(
 
     // Set project if provided
     if (values.project) {
-      runGCloudCommand(`gcloud config set project ${values.project} --configuration=${values.name}`);
+      runGCloudCommand(
+        `gcloud config set project ${values.project} --configuration=${values.name}`,
+      );
     }
 
     // Set account if provided
     if (values.account) {
-      runGCloudCommand(`gcloud config set account ${values.account} --configuration=${values.name}`);
+      runGCloudCommand(
+        `gcloud config set account ${values.account} --configuration=${values.name}`,
+      );
     }
 
     // Set region if provided
     if (values.region) {
-      runGCloudCommand(`gcloud config set compute/region ${values.region} --configuration=${values.name}`);
+      runGCloudCommand(
+        `gcloud config set compute/region ${values.region} --configuration=${values.name}`,
+      );
     }
 
     await showToast({
@@ -74,7 +82,9 @@ describe("create-config handleSubmit", () => {
 
     await handleSubmit(values, mockSetNameError);
 
-    expect(mockSetNameError).toHaveBeenCalledWith("Configuration name is required");
+    expect(mockSetNameError).toHaveBeenCalledWith(
+      "Configuration name is required",
+    );
     expect(mockRunGCloudCommand).not.toHaveBeenCalled();
     expect(showToast).not.toHaveBeenCalled();
   });
@@ -90,18 +100,21 @@ describe("create-config handleSubmit", () => {
     await handleSubmit(values, mockSetNameError);
 
     expect(mockRunGCloudCommand).toHaveBeenCalledTimes(4);
-    expect(mockRunGCloudCommand).toHaveBeenNthCalledWith(1, "gcloud config configurations create test-config");
+    expect(mockRunGCloudCommand).toHaveBeenNthCalledWith(
+      1,
+      "gcloud config configurations create test-config",
+    );
     expect(mockRunGCloudCommand).toHaveBeenNthCalledWith(
       2,
-      "gcloud config set project my-project --configuration=test-config"
+      "gcloud config set project my-project --configuration=test-config",
     );
     expect(mockRunGCloudCommand).toHaveBeenNthCalledWith(
       3,
-      "gcloud config set account user@example.com --configuration=test-config"
+      "gcloud config set account user@example.com --configuration=test-config",
     );
     expect(mockRunGCloudCommand).toHaveBeenNthCalledWith(
       4,
-      "gcloud config set compute/region us-central1 --configuration=test-config"
+      "gcloud config set compute/region us-central1 --configuration=test-config",
     );
 
     expect(showToast).toHaveBeenCalledWith({
@@ -123,7 +136,9 @@ describe("create-config handleSubmit", () => {
     await handleSubmit(values, mockSetNameError);
 
     expect(mockRunGCloudCommand).toHaveBeenCalledTimes(1);
-    expect(mockRunGCloudCommand).toHaveBeenCalledWith("gcloud config configurations create minimal-config");
+    expect(mockRunGCloudCommand).toHaveBeenCalledWith(
+      "gcloud config configurations create minimal-config",
+    );
 
     expect(showToast).toHaveBeenCalledWith({
       style: Toast.Style.Success,
@@ -144,14 +159,17 @@ describe("create-config handleSubmit", () => {
     await handleSubmit(values, mockSetNameError);
 
     expect(mockRunGCloudCommand).toHaveBeenCalledTimes(3);
-    expect(mockRunGCloudCommand).toHaveBeenNthCalledWith(1, "gcloud config configurations create partial-config");
+    expect(mockRunGCloudCommand).toHaveBeenNthCalledWith(
+      1,
+      "gcloud config configurations create partial-config",
+    );
     expect(mockRunGCloudCommand).toHaveBeenNthCalledWith(
       2,
-      "gcloud config set project my-project --configuration=partial-config"
+      "gcloud config set project my-project --configuration=partial-config",
     );
     expect(mockRunGCloudCommand).toHaveBeenNthCalledWith(
       3,
-      "gcloud config set compute/region us-west1 --configuration=partial-config"
+      "gcloud config set compute/region us-west1 --configuration=partial-config",
     );
 
     expect(showToast).toHaveBeenCalledWith({

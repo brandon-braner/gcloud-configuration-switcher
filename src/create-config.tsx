@@ -1,4 +1,11 @@
-import { ActionPanel, Action, Form, showToast, Toast, popToRoot } from "@raycast/api";
+import {
+  ActionPanel,
+  Action,
+  Form,
+  showToast,
+  Toast,
+  popToRoot,
+} from "@raycast/api";
 import { useState } from "react";
 import { runGCloudCommand } from "./utils";
 
@@ -22,17 +29,23 @@ export default function Command() {
 
       // Set project if provided
       if (values.project) {
-        runGCloudCommand(`gcloud config set project ${values.project} --configuration=${values.name}`);
+        runGCloudCommand(
+          `gcloud config set project ${values.project} --configuration=${values.name}`,
+        );
       }
 
       // Set account if provided
       if (values.account) {
-        runGCloudCommand(`gcloud config set account ${values.account} --configuration=${values.name}`);
+        runGCloudCommand(
+          `gcloud config set account ${values.account} --configuration=${values.name}`,
+        );
       }
 
       // Set region if provided
       if (values.region) {
-        runGCloudCommand(`gcloud config set compute/region ${values.region} --configuration=${values.name}`);
+        runGCloudCommand(
+          `gcloud config set compute/region ${values.region} --configuration=${values.name}`,
+        );
       }
 
       await showToast({
@@ -61,7 +74,10 @@ export default function Command() {
     <Form
       actions={
         <ActionPanel>
-          <Action.SubmitForm title="Create Configuration" onSubmit={handleSubmit} />
+          <Action.SubmitForm
+            title="Create Configuration"
+            onSubmit={handleSubmit}
+          />
         </ActionPanel>
       }
     >
@@ -79,9 +95,22 @@ export default function Command() {
           }
         }}
       />
-      <Form.TextField id="project" title="Project ID" placeholder="my-gcp-project" />
-      <Form.TextField id="account" title="Account Email" placeholder="user@example.com" />
-      <Form.TextField id="region" title="Region" placeholder="us-central1" defaultValue="us-central1" />
+      <Form.TextField
+        id="project"
+        title="Project ID"
+        placeholder="my-gcp-project"
+      />
+      <Form.TextField
+        id="account"
+        title="Account Email"
+        placeholder="user@example.com"
+      />
+      <Form.TextField
+        id="region"
+        title="Region"
+        placeholder="us-central1"
+        defaultValue="us-central1"
+      />
     </Form>
   );
 }

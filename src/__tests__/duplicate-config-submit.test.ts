@@ -4,14 +4,23 @@ import { showToast, popToRoot, Toast } from "@raycast/api";
 // Mock dependencies
 jest.mock("../utils");
 
-const mockRunGCloudCommand = runGCloudCommand as jest.MockedFunction<typeof runGCloudCommand>;
+const mockRunGCloudCommand = runGCloudCommand as jest.MockedFunction<
+  typeof runGCloudCommand
+>;
 
 // Helper function (from duplicate-config.tsx)
-function getConfigProperties(configName: string): { project?: string; account?: string; region?: string } {
+function getConfigProperties(configName: string): {
+  project?: string;
+  account?: string;
+  region?: string;
+} {
   try {
-    const output = runGCloudCommand(`gcloud config configurations describe ${configName}`);
+    const output = runGCloudCommand(
+      `gcloud config configurations describe ${configName}`,
+    );
     const lines = output.split("\n");
-    const properties: { project?: string; account?: string; region?: string } = {};
+    const properties: { project?: string; account?: string; region?: string } =
+      {};
 
     for (const line of lines) {
       if (line.includes("project:")) {
@@ -24,7 +33,7 @@ function getConfigProperties(configName: string): { project?: string; account?: 
     }
 
     return properties;
-  } catch (error) {
+  } catch (_error) {
     return {};
   }
 }
@@ -32,7 +41,7 @@ function getConfigProperties(configName: string): { project?: string; account?: 
 // Function to test handleSubmit logic from duplicate-config.tsx
 async function handleSubmit(
   values: { sourceConfig: string; newName: string },
-  setNameError: (error: string | undefined) => void
+  setNameError: (error: string | undefined) => void,
 ) {
   if (!values.newName) {
     setNameError("New configuration name is required");
@@ -57,15 +66,21 @@ async function handleSubmit(
 
     // Copy properties to new configuration
     if (properties.project) {
-      runGCloudCommand(`gcloud config set project ${properties.project} --configuration=${values.newName}`);
+      runGCloudCommand(
+        `gcloud config set project ${properties.project} --configuration=${values.newName}`,
+      );
     }
 
     if (properties.account) {
-      runGCloudCommand(`gcloud config set account ${properties.account} --configuration=${values.newName}`);
+      runGCloudCommand(
+        `gcloud config set account ${properties.account} --configuration=${values.newName}`,
+      );
     }
 
     if (properties.region) {
-      runGCloudCommand(`gcloud config set compute/region ${properties.region} --configuration=${values.newName}`);
+      runGCloudCommand(
+        `gcloud config set compute/region ${properties.region} --configuration=${values.newName}`,
+      );
     }
 
     await showToast({
@@ -75,7 +90,7 @@ async function handleSubmit(
     });
 
     popToRoot();
-  } catch (error) {
+  } catch (_error) {
     await showToast({
       style: Toast.Style.Failure,
       title: "Failed to duplicate configuration",
@@ -100,7 +115,9 @@ describe("duplicate-config handleSubmit", () => {
 
     await handleSubmit(values, mockSetNameError);
 
-    expect(mockSetNameError).toHaveBeenCalledWith("New configuration name is required");
+    expect(mockSetNameError).toHaveBeenCalledWith(
+      "New configuration name is required",
+    );
     expect(mockRunGCloudCommand).not.toHaveBeenCalled();
     expect(popToRoot).not.toHaveBeenCalled();
   });
@@ -145,16 +162,20 @@ properties:
 
     await handleSubmit(values, mockSetNameError);
 
-    expect(mockRunGCloudCommand).toHaveBeenCalledWith("gcloud config configurations describe source-config");
-    expect(mockRunGCloudCommand).toHaveBeenCalledWith("gcloud config configurations create new-config");
     expect(mockRunGCloudCommand).toHaveBeenCalledWith(
-      "gcloud config set project my-project --configuration=new-config"
+      "gcloud config configurations describe source-config",
     );
     expect(mockRunGCloudCommand).toHaveBeenCalledWith(
-      "gcloud config set account user@example.com --configuration=new-config"
+      "gcloud config configurations create new-config",
     );
     expect(mockRunGCloudCommand).toHaveBeenCalledWith(
-      "gcloud config set compute/region us-west1 --configuration=new-config"
+      "gcloud config set project my-project --configuration=new-config",
+    );
+    expect(mockRunGCloudCommand).toHaveBeenCalledWith(
+      "gcloud config set account user@example.com --configuration=new-config",
+    );
+    expect(mockRunGCloudCommand).toHaveBeenCalledWith(
+      "gcloud config set compute/region us-west1 --configuration=new-config",
     );
 
     expect(showToast).toHaveBeenCalledWith({
@@ -185,17 +206,21 @@ properties:
 
     await handleSubmit(values, mockSetNameError);
 
-    expect(mockRunGCloudCommand).toHaveBeenCalledWith("gcloud config configurations describe minimal-source");
-    expect(mockRunGCloudCommand).toHaveBeenCalledWith("gcloud config configurations create minimal-copy");
     expect(mockRunGCloudCommand).toHaveBeenCalledWith(
-      "gcloud config set project only-project --configuration=minimal-copy"
+      "gcloud config configurations describe minimal-source",
+    );
+    expect(mockRunGCloudCommand).toHaveBeenCalledWith(
+      "gcloud config configurations create minimal-copy",
+    );
+    expect(mockRunGCloudCommand).toHaveBeenCalledWith(
+      "gcloud config set project only-project --configuration=minimal-copy",
     );
     // Account and region should not be set
     expect(mockRunGCloudCommand).not.toHaveBeenCalledWith(
-      expect.stringContaining("gcloud config set account")
+      expect.stringContaining("gcloud config set account"),
     );
     expect(mockRunGCloudCommand).not.toHaveBeenCalledWith(
-      expect.stringContaining("gcloud config set compute/region")
+      expect.stringContaining("gcloud config set compute/region"),
     );
 
     expect(showToast).toHaveBeenCalledWith({
@@ -220,8 +245,12 @@ properties:
 
     await handleSubmit(values, mockSetNameError);
 
-    expect(mockRunGCloudCommand).toHaveBeenCalledWith("gcloud config configurations describe empty-source");
-    expect(mockRunGCloudCommand).toHaveBeenCalledWith("gcloud config configurations create empty-copy");
+    expect(mockRunGCloudCommand).toHaveBeenCalledWith(
+      "gcloud config configurations describe empty-source",
+    );
+    expect(mockRunGCloudCommand).toHaveBeenCalledWith(
+      "gcloud config configurations create empty-copy",
+    );
     // Only create command should be called, no property setting
     expect(mockRunGCloudCommand).toHaveBeenCalledTimes(2);
 

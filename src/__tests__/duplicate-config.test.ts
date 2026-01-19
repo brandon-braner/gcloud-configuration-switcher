@@ -5,7 +5,9 @@ jest.mock("../utils");
 
 // Import the functions we need to test
 // Since these are not exported, we need to mock the entire module behavior
-const mockRunGCloudCommand = runGCloudCommand as jest.MockedFunction<typeof runGCloudCommand>;
+const mockRunGCloudCommand = runGCloudCommand as jest.MockedFunction<
+  typeof runGCloudCommand
+>;
 
 // Helper function to parse gcloud configs (copied from duplicate-config.tsx)
 function parseGCloudConfigs(output: string): Array<{
@@ -41,11 +43,18 @@ function parseGCloudConfigs(output: string): Array<{
 }
 
 // Helper function to get config properties (copied from duplicate-config.tsx)
-function getConfigProperties(configName: string): { project?: string; account?: string; region?: string } {
+function getConfigProperties(configName: string): {
+  project?: string;
+  account?: string;
+  region?: string;
+} {
   try {
-    const output = runGCloudCommand(`gcloud config configurations describe ${configName}`);
+    const output = runGCloudCommand(
+      `gcloud config configurations describe ${configName}`,
+    );
     const lines = output.split("\n");
-    const properties: { project?: string; account?: string; region?: string } = {};
+    const properties: { project?: string; account?: string; region?: string } =
+      {};
 
     for (const line of lines) {
       if (line.includes("project:")) {
@@ -58,7 +67,7 @@ function getConfigProperties(configName: string): { project?: string; account?: 
     }
 
     return properties;
-  } catch (error) {
+  } catch (_error) {
     return {};
   }
 }
@@ -148,7 +157,9 @@ properties:
 
     const result = getConfigProperties("my-config");
 
-    expect(mockRunGCloudCommand).toHaveBeenCalledWith("gcloud config configurations describe my-config");
+    expect(mockRunGCloudCommand).toHaveBeenCalledWith(
+      "gcloud config configurations describe my-config",
+    );
     expect(result).toEqual({
       project: "my-project",
       account: "user@example.com",

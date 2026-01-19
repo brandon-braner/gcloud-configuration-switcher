@@ -1,4 +1,4 @@
-# GCloud Config Manager for Raycast
+# gcloud Config Manager for Raycast
 
 A Raycast extension to easily manage Google Cloud SDK configurations. Create, duplicate, and switch between gcloud configurations with a few keystrokes.
 
@@ -65,20 +65,20 @@ If you want to develop or modify the extension:
 
 ## Usage
 
-### List GCloud Configurations
+### List gcloud Configurations
 
 1. Open Raycast (⌘ Space)
-2. Type "List GCloud Configurations"
+2. Type "List gcloud Configurations"
 3. Press Enter to view all configurations
 4. Use the action panel to:
    - Activate a configuration (Enter)
    - Delete a configuration (⌘ Delete)
    - Refresh the list
 
-### Create GCloud Configuration
+### Create gcloud Configuration
 
 1. Open Raycast
-2. Type "Create GCloud Configuration"
+2. Type "Create gcloud Configuration"
 3. Fill in the form:
    - Configuration Name (required)
    - Project ID (optional)
@@ -86,10 +86,10 @@ If you want to develop or modify the extension:
    - Region (optional, defaults to us-central1)
 4. Press ⌘ Enter to create
 
-### Duplicate GCloud Configuration
+### Duplicate gcloud Configuration
 
 1. Open Raycast
-2. Type "Duplicate GCloud Configuration"
+2. Type "Duplicate gcloud Configuration"
 3. Select the source configuration from the dropdown
 4. The form will auto-populate with values from the source configuration
 5. Edit any fields you want to change:

@@ -1,4 +1,11 @@
-import { ActionPanel, Action, Form, showToast, Toast, popToRoot } from "@raycast/api";
+import {
+  ActionPanel,
+  Action,
+  Form,
+  showToast,
+  Toast,
+  popToRoot,
+} from "@raycast/api";
 import { useState, useEffect } from "react";
 import { runGCloudCommand } from "./utils";
 
@@ -31,11 +38,18 @@ function parseGCloudConfigs(output: string): GCloudConfig[] {
   return configs;
 }
 
-function getConfigProperties(configName: string): { project?: string; account?: string; region?: string } {
+function getConfigProperties(configName: string): {
+  project?: string;
+  account?: string;
+  region?: string;
+} {
   try {
-    const output = runGCloudCommand(`gcloud config configurations describe ${configName}`);
+    const output = runGCloudCommand(
+      `gcloud config configurations describe ${configName}`,
+    );
     const lines = output.split("\n");
-    const properties: { project?: string; account?: string; region?: string } = {};
+    const properties: { project?: string; account?: string; region?: string } =
+      {};
 
     for (const line of lines) {
       if (line.includes("project:")) {
@@ -48,7 +62,7 @@ function getConfigProperties(configName: string): { project?: string; account?: 
     }
 
     return properties;
-  } catch (error) {
+  } catch (_error) {
     return {};
   }
 }
@@ -111,15 +125,21 @@ export default function Command() {
 
       // Set properties from form values
       if (values.project) {
-        runGCloudCommand(`gcloud config set project ${values.project} --configuration=${values.newName}`);
+        runGCloudCommand(
+          `gcloud config set project ${values.project} --configuration=${values.newName}`,
+        );
       }
 
       if (values.account) {
-        runGCloudCommand(`gcloud config set account ${values.account} --configuration=${values.newName}`);
+        runGCloudCommand(
+          `gcloud config set account ${values.account} --configuration=${values.newName}`,
+        );
       }
 
       if (values.region) {
-        runGCloudCommand(`gcloud config set compute/region ${values.region} --configuration=${values.newName}`);
+        runGCloudCommand(
+          `gcloud config set compute/region ${values.region} --configuration=${values.newName}`,
+        );
       }
 
       await showToast({
@@ -148,7 +168,10 @@ export default function Command() {
     <Form
       actions={
         <ActionPanel>
-          <Action.SubmitForm title="Duplicate Configuration" onSubmit={handleSubmit} />
+          <Action.SubmitForm
+            title="Duplicate Configuration"
+            onSubmit={handleSubmit}
+          />
         </ActionPanel>
       }
     >
@@ -159,7 +182,11 @@ export default function Command() {
         onChange={setSelectedConfig}
       >
         {configs.map((config) => (
-          <Form.Dropdown.Item key={config.name} value={config.name} title={config.name} />
+          <Form.Dropdown.Item
+            key={config.name}
+            value={config.name}
+            title={config.name}
+          />
         ))}
       </Form.Dropdown>
       <Form.TextField

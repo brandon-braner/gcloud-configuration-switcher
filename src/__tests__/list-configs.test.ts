@@ -4,7 +4,9 @@ import { showToast, Toast } from "@raycast/api";
 // Mock dependencies
 jest.mock("../utils");
 
-const mockRunGCloudCommand = runGCloudCommand as jest.MockedFunction<typeof runGCloudCommand>;
+const mockRunGCloudCommand = runGCloudCommand as jest.MockedFunction<
+  typeof runGCloudCommand
+>;
 
 // Helper function to parse gcloud configs (from list-configs.tsx)
 interface GCloudConfig {
@@ -115,7 +117,9 @@ describe("activateConfig", () => {
 
     await activateConfig(configName, mockLoadConfigs);
 
-    expect(mockRunGCloudCommand).toHaveBeenCalledWith("gcloud config configurations activate test-config");
+    expect(mockRunGCloudCommand).toHaveBeenCalledWith(
+      "gcloud config configurations activate test-config",
+    );
     expect(showToast).toHaveBeenCalledWith({
       style: Toast.Style.Success,
       title: "Configuration activated",
@@ -133,7 +137,7 @@ describe("activateConfig", () => {
     expect(showToast).toHaveBeenCalledWith(
       expect.objectContaining({
         style: Toast.Style.Success,
-      })
+      }),
     );
   });
 
@@ -179,7 +183,9 @@ describe("activateConfig", () => {
       jest.clearAllMocks();
       await activateConfig(config, mockLoadConfigs);
 
-      expect(mockRunGCloudCommand).toHaveBeenCalledWith(`gcloud config configurations activate ${config}`);
+      expect(mockRunGCloudCommand).toHaveBeenCalledWith(
+        `gcloud config configurations activate ${config}`,
+      );
       expect(showToast).toHaveBeenCalledWith({
         style: Toast.Style.Success,
         title: "Configuration activated",
